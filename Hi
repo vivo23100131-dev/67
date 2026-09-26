@@ -1,0 +1,24 @@
+local url = "https://raw.githubusercontent.com/vivo23100131-dev/Lua/refs/heads/main/Lua"
+
+-- 1. ตรวจสอบว่าดึง URL ได้หรือไม่
+local getSuccess, code = pcall(function()
+    return game:HttpGet(url)
+end)
+
+if not getSuccess then
+    warn("❌ โหลด URL ไม่สำเร็จ (ลิงก์เสีย หรือ โดนบล็อก):", code)
+    return
+end
+
+-- 2. ตรวจสอบว่าแปลงข้อความเป็นฟังก์ชันได้หรือไม่
+local runFunction, syntaxErr = loadstring(code)
+
+if not runFunction then
+    warn("❌ โค้ด Lua มีข้อผิดพลาด (Syntax Error):", syntaxErr)
+    print("เนื้อหาที่ดึงมาได้คือ:", code) -- อาจจะแสดงข้อความ 404 Not Found
+    return
+end
+
+-- 3. เริ่มรันสคริปต์
+runFunction()
+print("✅ รันสคริปต์สำเร็จ")
